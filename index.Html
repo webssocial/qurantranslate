@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quran Translate - Read Quran Online</title>
+
+<meta name="description" content="Read the Holy Quran online with Arabic text and translations in English, Urdu, Pashto, Indonesian, Malay and other languages.">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f7f6;
+color:#222;
+}
+
+header{
+background:#087443;
+color:white;
+padding:15px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.menuBtn{
+font-size:27px;
+cursor:pointer;
+}
+
+nav{
+display:flex;
+gap:5px;
+}
+
+button{
+cursor:pointer;
+}
+
+nav button,
+.menu button{
+border:0;
+background:none;
+color:white;
+padding:10px;
+font-size:15px;
+}
+
+.menu{
+display:none;
+position:absolute;
+right:10px;
+top:60px;
+width:220px;
+background:#087443;
+padding:10px;
+border-radius:8px;
+box-shadow:0 4px 15px #555;
+}
+
+.menu button{
+display:block;
+width:100%;
+text-align:left;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:12px;
+box-shadow:0 2px 10px #ddd;
+}
+
+select,
+input,
+textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:7px;
+font-size:16px;
+}
+
+.mainBtn{
+background:#087443;
+color:white;
+border:0;
+padding:12px 18px;
+border-radius:7px;
+margin:5px 0;
+}
+
+.deleteBtn{
+background:#c62828;
+color:white;
+border:0;
+padding:9px 14px;
+border-radius:6px;
+}
+
+.status{
+margin:10px 0;
+font-weight:bold;
+}
+
+.hidden{
+display:none!important;
+}
+
+.quranBox{
+background:white;
+margin-top:15px;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 8px #ddd;
+}
+
+.ayah{
+padding:15px 5px;
+border-bottom:1px solid #ddd;
+}
+
+.arabic{
+font-size:28px;
+line-height:2;
+direction:rtl;
+text-align:right;
+}
+
+.translation{
+font-size:17px;
+line-height:1.7;
+margin-top:12px;
+}
+
+.contentGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.contentCard{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 8px #ddd;
+}
+
+.contentCard video{
+width:100%;
+display:block;
+background:#000;
+}
+
+.caption{
+padding:15px;
+font-size:16px;
+line-height:1.5;
+}
+
+footer{
+margin-top:40px;
+padding:25px;
+background:#087443;
+color:white;
+text-align:center;
+}
+
+footer button{
+background:none;
+border:0;
+color:white;
+margin:5px;
+}
+
+.privacy{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:12px;
+box-shadow:0 2px 10px #ddd;
+line-height:1.6;
+}
+
+.developer{
+margin-top:20px;
+}
+
+@media(max-width:700px){
+nav{display:none}
+.logo{font-size:18px}
+.container{padding:12px}
+.arabic{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">📖 Quran Translate</div>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('content')">Content</button>
+<button onclick="showPage('contact')">Contact</button>
+</nav>
+
+<div class="menuBtn" onclick="toggleMenu()">☰</div>
+
+<div class="menu" id="menu">
+
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('content')">Content</button>
+<button onclick="showPage('admin')">Admin Upload</button>
+<button onclick="showPage('contact')">Contact</button>
+<button onclick="showPage('privacy')">Privacy Policy</button>
+<button onclick="showPage('about')">About</button>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="card">
+
+<h2>Read Quran Online</h2>
+
+<label>Select Surah</label>
+
+<select id="surahSelect"></select>
+
+<label>Select Translation</label>
+
+<select id="languageSelect">
+
+<option value="en.asad">English</option>
+<option value="ur.jalandhry">Urdu</option>
+<option value="ps.abdulwali">Pashto</option>
+<option value="id.indonesian">Indonesian</option>
+<option value="ms.basmeih">Malay</option>
+<option value="bn.bengali">Bengali</option>
+<option value="tr.diyanet">Turkish</option>
+<option value="fa.ayati">Persian</option>
+<option value="uz.sodik">Uzbek</option>
+<option value="ha.gumi">Hausa</option>
+
+</select>
+
+<button class="mainBtn" onclick="loadQuran()">
+Read Quran
+</button>
+
+</div>
+
+<div id="quranResult"></div>
+
+</section>
+
+
+<!-- CONTENT -->
+
+<section id="content" class="page">
+
+<div class="card">
+
+<h2>Quran Content</h2>
+
+<p>Videos published by the administrator.</p>
+
+</div>
+
+<div id="publicVideos" class="contentGrid"></div>
+
+</section>
+
+
+<!-- ADMIN -->
+
+<section id="admin" class="page">
+
+<div class="card" id="loginBox">
+
+<h2>Administrator</h2>
+
+<input
+type="password"
+id="adminPassword"
+placeholder="Administrator password">
+
+<button class="mainBtn" onclick="adminLogin()">
+Login
+</button>
+
+<div id="loginStatus" class="status"></div>
+
+</div>
+
+
+<div class="card hidden" id="adminPanel">
+
+<h2>Upload Video</h2>
+
+<input
+type="file"
+id="videoFile"
+accept="video/*">
+
+<textarea
+id="videoCaption"
+placeholder="Write video caption"></textarea>
+
+<button class="mainBtn" onclick="uploadVideo()">
+Upload Video
+</button>
+
+<div id="uploadStatus" class="status"></div>
+
+<hr>
+
+<h3>Manage Videos</h3>
+
+<div id="adminVideos"></div>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section id="contact" class="page">
+
+<div class="card">
+
+<h2>Contact Us</h2>
+
+<p>Email: wwwsupportcenter@gmail.com</p>
+
+</div>
+
+</section>
+
+
+<!-- PRIVACY -->
+
+<section id="privacy" class="page">
+
+<div class="privacy">
+
+<h2>Privacy Policy</h2>
+
+<p>
+Our privacy is important to us. This Privacy Policy explains how our
+application handles user information and protects your privacy while
+you use the application.
+</p>
+
+<p>
+This application is designed to provide users with access to the Holy
+Quran and translations in multiple languages. Our goal is to offer a
+simple, easy-to-use, and respectful reading experience.
+</p>
+
+<h3>Information Collection</h3>
+
+<p>
+Our application does not require users to create an account. We do not
+ask users to provide their name, email address, phone number, home
+address, or other personal identification information in order to use
+the main features of the application.
+</p>
+
+<p>
+Users can access and use the available content without providing
+personal details.
+</p>
+
+<h3>Use of Information</h3>
+
+<p>
+Since our application does not require personal information from users,
+we do not use personal information for advertising, marketing, or
+selling to third parties.
+</p>
+
+<p>
+The application is intended only to provide Quranic content and
+translations for reading and educational purposes.
+</p>
+
+<h3>Data Sharing</h3>
+
+<p>
+We do not intentionally collect or share users' personal information
+with third parties. Users are not required to submit their personal
+details to access the application's main features.
+</p>
+
+<h3>Third-Party Services</h3>
+
+<p>
+The application may contain content or services that are provided
+through third-party sources. These services may have their own privacy
+policies and practices. Users are encouraged to review the privacy
+policies of third-party services when applicable.
+</p>
+
+<h3>Children's Privacy</h3>
+
+<p>
+Our application is designed to be simple and accessible. We do not
+knowingly collect personal information from children or other users.
+</p>
+
+<h3>Security</h3>
+
+<p>
+We aim to provide a safe and reliable application experience. However,
+users should understand that no digital service can guarantee complete
+security in every situation.
+</p>
+
+<h3>Changes to This Privacy Policy</h3>
+
+<p>
+We may update this Privacy Policy from time to time if the application
+is improved or new features are added. Any important changes will be
+reflected in the updated version available within the application.
+</p>
+
+<div class="developer">
+
+<strong>Developer:</strong> Safi Ullah<br>
+
+<strong>Father Name:</strong> Gul Rahman
+
+</div>
+
+<h3>Contact Us</h3>
+
+<p>
+If you have any questions, suggestions, feedback, or experience any
+problems while using this application, you can contact us through the
+following email address:
+</p>
+
+<p>
+<a href="mailto:wwwsupportcenter@gmail.com">
+📧 wwwsupportcenter@gmail.com
+</a>
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section id="about" class="page">
+
+<div class="card">
+
+<h2>About Quran Translate</h2>
+
+<p>
+Quran Translate is a simple website for reading the Holy Quran
+with Arabic text and multiple translations.
+</p>
+
+<p><b>Developer:</b> Safi Ullah</p>
+
+<p><b>Father:</b> Gul Rahman</p>
+
+</div>
+
+</section>
+
+</div>
+
+
+<footer>
+
+<button onclick="showPage('home')">Home</button>
+
+<button onclick="showPage('content')">Content</button>
+
+<button onclick="showPage('contact')">Contact</button>
+
+<button onclick="showPage('privacy')">Privacy Policy</button>
+
+<button onclick="showPage('about')">About</button>
+
+<p>© 2026 Quran Translate</p>
+
+</footer>
+
+
+<script>
+
+/* ==============================
+   SURAH LIST
+============================== */
+
+const surahs=[
+"Al-Fatihah","Al-Baqarah","Ali Imran","An-Nisa","Al-Maidah",
+"Al-Anam","Al-Araf","Al-Anfal","At-Tawbah","Yunus",
+"Hud","Yusuf","Ar-Rad","Ibrahim","Al-Hijr",
+"An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
+"Al-Anbiya","Al-Hajj","Al-Muminun","An-Nur","Al-Furqan",
+"Ash-Shuara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
+"Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir",
+"Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
+"Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah",
+"Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf",
+"Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman",
+"Al-Waqiah","Al-Hadid","Al-Mujadilah","Al-Hashr","Al-Mumtahanah",
+"As-Saff","Al-Jumuah","Al-Munafiqun","At-Taghabun","At-Talaq",
+"At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Maarij",
+"Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah",
+"Al-Insan","Al-Mursalat","An-Naba","An-Naziat","Abasa",
+"At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj",
+"At-Tariq","Al-Ala","Al-Ghashiyah","Al-Fajr","Al-Balad",
+"Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin",
+"Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat",
+"Al-Qariah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil",
+"Quraysh","Al-Maun","Al-Kawthar","Al-Kafirun","An-Nasr",
+"Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
+];
+
+const surahSelect=document.getElementById("surahSelect");
+
+surahs.forEach((name,index)=>{
+
+const option=document.createElement("option");
+
+option.value=index+1;
+
+option.textContent=(index+1)+". "+name;
+
+surahSelect.appendChild(option);
+
+});
+
+
+/* ==============================
+   NAVIGATION
+============================== */
+
+function showPage(page){
+
+document.querySelectorAll(".page").forEach(function(p){
+p.classList.remove("active");
+});
+
+pauseAllVideos();
+
+const target=document.getElementById(page);
+
+if(target){
+target.classList.add("active");
+}
+
+document.getElementById("menu").style.display="none";
+
+if(page==="content"){
+loadPublicVideos();
+}
+
+if(page==="admin" && adminLoggedIn){
+loadAdminVideos();
+}
+
+window.scrollTo(0,0);
+
+}
+
+function toggleMenu(){
+
+const menu=document.getElementById("menu");
+
+menu.style.display=
+menu.style.display==="block"
+?"none"
+:"block";
+
+}
+
+
+/* ==============================
+   QURAN
+============================== */
+
+async function loadQuran(){
+
+const number=document.getElementById("surahSelect").value;
+
+const language=document.getElementById("languageSelect").value;
+
+const result=document.getElementById("quranResult");
+
+result.innerHTML=
+"<div class='card'>Loading Quran...</div>";
+
+try{
+
+const arabic=await fetch(
+"https://api.alquran.cloud/v1/surah/"
++number+
+"/quran-uthmani"
+);
+
+const translation=await fetch(
+"https://api.alquran.cloud/v1/surah/"
++number+
+"/"+
+language
+);
+
+const arabicData=await arabic.json();
+
+const translationData=await translation.json();
+
+if(
+arabicData.code!==200 ||
+translationData.code!==200
+){
+throw new Error("Quran API error");
+}
+
+let html=
+"<div class='card'><h2>"+
+escapeHTML(surahs[number-1])+
+"</h2></div>";
+
+for(
+let i=0;
+i<arabicData.data.ayahs.length;
+i++
+){
+
+html+=
+"<div class='quranBox'>"+
+"<div class='ayah'>"+
+"<div class='arabic'>"+
+escapeHTML(
+arabicData.data.ayahs[i].text
+)+
+" ۝ "+
+arabicData.data.ayahs[i].numberInSurah+
+"</div>"+
+"<div class='translation'>"+
+escapeHTML(
+translationData.data.ayahs[i].text
+)+
+"</div>"+
+"</div>"+
+"</div>";
+
+}
+
+result.innerHTML=html;
+
+}catch(error){
+
+console.error(error);
+
+result.innerHTML=
+"<div class='card'>Unable to load Quran. Please try again.</div>";
+
+}
+
+}
+
+
+/* ==============================
+   ADMIN LOGIN
+============================== */
+
+const ADMIN_PASSWORD="Safiullahadministrator";
+
+let adminLoggedIn=false;
+
+function adminLogin(){
+
+const password=
+document.getElementById("adminPassword").value;
+
+if(password===ADMIN_PASSWORD){
+
+adminLoggedIn=true;
+
+document.getElementById("loginBox")
+.classList.add("hidden");
+
+document.getElementById("adminPanel")
+.classList.remove("hidden");
+
+loadAdminVideos();
+
+}else{
+
+document.getElementById("loginStatus")
+.textContent="Incorrect password.";
+
+}
+
+}
+
+
+/* ==============================
+   VIDEO STORAGE
+============================== */
+
+const DB_NAME="IslamicQuranVideos";
+
+const DB_VERSION=1;
+
+const STORE="videos";
+
+
+function openDB(){
+
+return new Promise(function(resolve,reject){
+
+const request=
+indexedDB.open(DB_NAME,DB_VERSION);
+
+request.onupgradeneeded=function(event){
+
+const db=event.target.result;
+
+if(!db.objectStoreNames.contains(STORE)){
+
+db.createObjectStore(
+STORE,
+{keyPath:"id"}
+);
+
+}
+
+};
+
+request.onsuccess=function(){
+
+resolve(request.result);
+
+};
+
+request.onerror=function(){
+
+reject(request.error);
+
+};
+
+});
+
+}
+
+
+async function saveVideo(video){
+
+const db=await openDB();
+
+return new Promise(function(resolve,reject){
+
+const tx=db.transaction(STORE,"readwrite");
+
+tx.objectStore(STORE).put(video);
+
+tx.oncomplete=resolve;
+
+tx.onerror=function(){
+reject(tx.error);
+};
+
+});
+
+}
+
+
+async function getVideos(){
+
+const db=await openDB();
+
+return new Promise(function(resolve,reject){
+
+const tx=db.transaction(STORE,"readonly");
+
+const request=
+tx.objectStore(STORE).getAll();
+
+request.onsuccess=function(){
+resolve(request.result);
+};
+
+request.onerror=function(){
+reject(request.error);
+};
+
+});
+
+}
+
+
+async function removeVideo(id){
+
+const db=await openDB();
+
+return new Promise(function(resolve,reject){
+
+const tx=db.transaction(STORE,"readwrite");
+
+tx.objectStore(STORE).delete(id);
+
+tx.oncomplete=resolve;
+
+tx.onerror=function(){
+reject(tx.error);
+};
+
+});
+
+}
+
+
+/* ==============================
+   UPLOAD
+============================== */
+
+async function uploadVideo(){
+
+if(!adminLoggedIn){
+return;
+}
+
+const input=
+document.getElementById("videoFile");
+
+const caption=
+document.getElementById("videoCaption")
+.value.trim();
+
+const status=
+document.getElementById("uploadStatus");
+
+const file=input.files[0];
+
+if(!file){
+
+status.textContent=
+"Please select a video.";
+
+return;
+
+}
+
+if(!file.type.startsWith("video/")){
+
+status.textContent=
+"Please select a valid video.";
+
+return;
+
+}
+
+status.textContent=
+"Uploading video...";
+
+try{
+
+await saveVideo({
+
+id:Date.now(),
+
+file:file,
+
+caption:caption,
+
+name:file.name,
+
+createdAt:new Date().toISOString()
+
+});
+
+input.value="";
+
+document.getElementById("videoCaption").value="";
+
+status.textContent=
+"Video uploaded successfully.";
+
+await loadPublicVideos();
+
+await loadAdminVideos();
+
+}catch(error){
+
+console.error(error);
+
+status.textContent=
+"Storage limit reached on this browser.";
+
+}
+
+}
+
+
+/* ==============================
+   PUBLIC VIDEOS
+============================== */
+
+async function loadPublicVideos(){
+
+const container=
+document.getElementById("publicVideos");
+
+container.innerHTML="<p>Loading videos...</p>";
+
+try{
+
+const videos=await getVideos();
+
+videos.sort(function(a,b){
+return b.id-a.id;
+});
+
+if(videos.length===0){
+
+container.innerHTML=
+"<p>No videos published yet.</p>";
+
+return;
+
+}
+
+container.innerHTML="";
+
+videos.forEach(function(item){
+
+const card=
+document.createElement("div");
+
+card.className="contentCard";
+
+const video=
+document.createElement("video");
+
+video.controls=true;
+
+video.preload="metadata";
+
+video.autoplay=false;
+
+video.src=
+URL.createObjectURL(item.file);
+
+const caption=
+document.createElement("div");
+
+caption.className="caption";
+
+caption.textContent=
+item.caption || "";
+
+card.appendChild(video);
+
+card.appendChild(caption);
+
+container.appendChild(card);
+
+video.addEventListener("play",function(){
+
+document.querySelectorAll("video").forEach(function(otherVideo){
+
+if(otherVideo!==video){
+otherVideo.pause();
+}
+
+});
+
+});
+
+videoScrollObserver.observe(video);
+
+});
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+"<p>Unable to load videos.</p>";
+
+}
+
+}
+
+
+/* ==============================
+   SCROLL VIDEO CONTROL
+============================== */
+
+const videoScrollObserver =
+new IntersectionObserver(function(entries){
+
+entries.forEach(function(entry){
+
+const video=entry.target;
+
+if(!entry.isIntersecting){
+
+video.pause();
+
+}
+
+});
+
+},{
+threshold:0.25
+});
+
+
+/* ==============================
+   ALL VIDEOS PAUSE
+============================== */
+
+function pauseAllVideos(){
+
+document.querySelectorAll("video").forEach(function(video){
+
+video.pause();
+
+});
+
+}
+
+
+/* ==============================
+   ADMIN VIDEO LIST
+============================== */
+
+async function loadAdminVideos(){
+
+if(!adminLoggedIn){
+return;
+}
+
+const container=
+document.getElementById("adminVideos");
+
+container.innerHTML="<p>Loading...</p>";
+
+try{
+
+const videos=await getVideos();
+
+videos.sort(function(a,b){
+return b.id-a.id;
+});
+
+container.innerHTML="";
+
+if(videos.length===0){
+
+container.innerHTML="<p>No videos.</p>";
+
+return;
+
+}
+
+videos.forEach(function(item){
+
+const card=
+document.createElement("div");
+
+card.className="card";
+
+const video=
+document.createElement("video");
+
+video.controls=true;
+
+video.preload="metadata";
+
+video.autoplay=false;
+
+video.style.width="100%";
+
+video.style.maxWidth="600px";
+
+video.src=
+URL.createObjectURL(item.file);
+
+const caption=
+document.createElement("p");
+
+caption.textContent=
+item.caption || "";
+
+const button=
+document.createElement("button");
+
+button.className="deleteBtn";
+
+button.textContent="Delete Video";
+
+button.onclick=async function(){
+
+if(!confirm("Delete this video?")){
+return;
+}
+
+video.pause();
+
+await removeVideo(item.id);
+
+await loadAdminVideos();
+
+await loadPublicVideos();
+
+};
+
+card.appendChild(video);
+
+card.appendChild(caption);
+
+card.appendChild(button);
+
+container.appendChild(card);
+
+adminVideoScrollObserver.observe(video);
+
+});
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+"<p>Unable to load videos.</p>";
+
+}
+
+}
+
+
+/* ==============================
+   ADMIN SCROLL CONTROL
+============================== */
+
+const adminVideoScrollObserver =
+new IntersectionObserver(function(entries){
+
+entries.forEach(function(entry){
+
+if(!entry.isIntersecting){
+
+entry.target.pause();
+
+}
+
+});
+
+},{
+threshold:0.25
+});
+
+
+/* ==============================
+   SAFE TEXT
+============================== */
+
+function escapeHTML(text){
+
+const div=document.createElement("div");
+
+div.textContent=text;
+
+return div.innerHTML;
+
+}
+
+
+/* ==============================
+   START
+============================== */
+
+loadPublicVideos();
+
+</script>
+
+</body>
+</html>
